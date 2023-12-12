@@ -6,7 +6,7 @@ import json
 import pickle
 from tqdm import tqdm
 import numpy as np
-from runqfix import *
+from recoder_runvalid import *
 from stringfycode import stringfyRoot
 from copy import deepcopy
 import time
@@ -509,15 +509,14 @@ buggy_file_list = os.listdir(buggy_folder_path)
 fix_file_list = os.listdir(fix_folder_path)
 meta_file_list = os.listdir(meta_folder_path)
 
-bugid = 1
 for buggy_file, fix_file, meta_file in zip(buggy_file_list, fix_file_list, meta_file_list):
     classname = ""
     lineid = 0
-    idss = "buggy-" + str(bugid)
+    idss = meta_file.split('.')[0]
     # meta data file
     with open(os.path.join(meta_folder_path, meta_file), 'r', encoding='UTF-8') as f1:
         meta = f1.readline()
-        classname = meta.split('<sep>')[1]
+        classname = meta.split('<sep>')[4].split('@')[0].split('\\')[-1].split('.')[0]  # 去掉.java后缀
         buggy_lines = meta.split('<sep>')[2]
         lineid = eval(buggy_lines.replace('[', '').replace(']', '').split(':')[0]) + 1
 
@@ -584,4 +583,3 @@ for buggy_file, fix_file, meta_file in zip(buggy_file_list, fix_file_list, meta_
              'aftercode': aftercode, 'tree': troot.printTreeWithVar(troot, vardic),
              'prob': troot.getTreeProb(troot), 'mode': 0, 'line': lineid, 'isa': False})
     solveone(data, model)
-    bugid += 1
