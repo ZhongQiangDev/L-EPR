@@ -52,8 +52,7 @@ def load_model(model, dirs='checkpointSearch/'):
 
 
 use_cuda = True  # True#torch.cuda.is_available()
-onelist = ['root', 'body', 'statements', 'block', 'arguments', 'initializers', 'parameters', 'case', 'cases',
-           'selectors']
+onelist = ['root', 'body', 'statements', 'block', 'arguments', 'initializers', 'parameters', 'case', 'cases', 'selectors']
 
 
 def gVar(data):
@@ -1036,7 +1035,7 @@ def solveone(data, model):  # (treestr, prob, model, subroot, vardic, typedic, i
             currid = indexs * args.batch_size + i
             idss = data[currid]['idss']
             subroot = data[currid]['subroot']
-            # 获取类似于../bugs-QuixBugs/bugs/%s/names.json中的数据
+            # 从meta文件中获取类似于../bugs-QuixBugs/bugs/%s/names.json的数据
             if os.path.exists("Valid/metas/%s.txt" % idss):
                 classcontent = []
                 with open("Valid/metas/%s.txt" % idss, 'r', encoding='UTF-8') as f1:
@@ -1109,7 +1108,7 @@ def solveone(data, model):  # (treestr, prob, model, subroot, vardic, typedic, i
                                      'filename': data[currid]['filepath'], 'mode': mode, 'code': code,
                                      'line': data[currid]['line'], 'isa': data[currid]['isa']})
         indexs += 1
-    open('patch/%s.json' % data[0]['idss'], 'w').write(json.dumps(savedata, indent=4))
+    open('patch/Valid/%s.json' % data[0]['idss'], 'w').write(json.dumps(savedata, indent=4))
 
 
 def solveone2(data, model):  # (treestr, prob, model, subroot, vardic, typedic, idx, idss, classname, mode):

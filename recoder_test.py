@@ -350,12 +350,10 @@ def getSubroot(treeroot):
     return lnode, mnode
 
 
-def repair(treeroot, troot, oldcode, filepath, filepath2, patchpath, patchnum, isIf, mode, subroot, vardic, typedic,
-           idxs, testmethods, idss, classname):
+def repair(treeroot, troot, oldcode, filepath, filepath2, patchpath, patchnum, isIf, mode, subroot, vardic, typedic, idxs, testmethods, idss, classname):
     global aftercode
     global precode
-    actionlist = solveone(troot.printTreeWithVar(troot, vardic), troot.getTreeProb(troot), model, subroot, vardic,
-                          typedic, idxs, idss, classname, mode)
+    actionlist = solveone(troot.printTreeWithVar(troot, vardic), troot.getTreeProb(troot), model, subroot, vardic, typedic, idxs, idss, classname, mode)
     for x in actionlist:
         if x.strip() in patchdict:
             continue
@@ -499,7 +497,6 @@ def isAssign(line):
 
 
 model = test()
-import sys
 
 timecurr = time.time()
 buggy_folder_path = 'Valid/buggy_methods'
@@ -526,8 +523,20 @@ for buggy_file, fix_file, meta_file in zip(buggy_file_list, fix_file_list, meta_
 
     # buggy code file
     filepath = os.path.join(buggy_folder_path, buggy_file)
-    lines1 = open(filepath, "r").read().strip()
-    liness = lines1.splitlines()
+    # 只有method的代码需要外嵌入一个class语句才能通过编译
+    lines1 = ""
+    liness = []
+    line_list = open(filepath, "r", encoding='UTF-8').readlines()
+    spaces_before = len(line_list[0]) - len(line_list[0].lstrip()) - 4
+    lines1 += " " * spaces_before + "public class " + classname + " {" + "\n"
+    lineid += 1
+    liness.append(" " * spaces_before + "public class " + classname + " {" + "\n")
+    for line in line_list:
+        lines1 += line
+        liness.append(line)
+    lines1 += " " * spaces_before + "}" + "\n"
+    liness.append(" " * spaces_before + "}" + "\n")
+
     tokens = javalang.tokenizer.tokenize(lines1)
     parser = javalang.parser.Parser(tokens)
     tree = parser.parse()
