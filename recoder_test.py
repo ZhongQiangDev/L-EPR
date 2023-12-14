@@ -500,13 +500,10 @@ model = test()
 
 timecurr = time.time()
 buggy_folder_path = 'Valid/buggy_methods'
-fix_folder_path = 'Valid/fix_methods'
 meta_folder_path = 'Valid/metas'
-buggy_file_list = os.listdir(buggy_folder_path)
-fix_file_list = os.listdir(fix_folder_path)
 meta_file_list = os.listdir(meta_folder_path)
 
-for buggy_file, fix_file, meta_file in zip(buggy_file_list, fix_file_list, meta_file_list):
+for meta_file in tqdm(meta_file_list):
     classname = ""
     lineid = 0
     idss = meta_file.split('.')[0]
@@ -521,8 +518,8 @@ for buggy_file, fix_file, meta_file in zip(buggy_file_list, fix_file_list, meta_
     patchdict = {}
     print('path: ', classname)
 
-    # buggy code file
-    filepath = os.path.join(buggy_folder_path, buggy_file)
+    # buggy code file：meta_file == buggy_file
+    filepath = os.path.join(buggy_folder_path, meta_file)
     # 只有method的代码需要外嵌入一个class语句才能通过编译
     lines1 = ""
     liness = []
