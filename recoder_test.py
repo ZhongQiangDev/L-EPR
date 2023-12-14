@@ -536,7 +536,12 @@ for meta_file in tqdm(meta_file_list):
 
     tokens = javalang.tokenizer.tokenize(lines1)
     parser = javalang.parser.Parser(tokens)
-    tree = parser.parse()
+    try:
+        tree = parser.parse()
+    except javalang.parser.JavaSyntaxError as e:
+        print("parse()->failure. skip!")
+        print(e)
+        continue
     try:
         tmproot = getroottree(generateAST(tree))
     except AssertionError as e:
