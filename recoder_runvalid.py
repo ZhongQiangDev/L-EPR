@@ -1035,40 +1035,12 @@ def solveone(data, model):  # (treestr, prob, model, subroot, vardic, typedic, i
             currid = indexs * args.batch_size + i
             idss = data[currid]['idss']
             subroot = data[currid]['subroot']
-            # 从meta文件中获取类似于../bugs-QuixBugs/bugs/%s/names.json的数据
-            if os.path.exists("Valid/metas/%s.txt" % idss):
-                classcontent = []
-                with open("Valid/metas/%s.txt" % idss, 'r', encoding='UTF-8') as f1:
-                    meta = f1.readline()
-                    names = {'filename': meta.split('<sep>')[4].split('@')[0].split('\\')[-1]}
 
-                    methods = meta.split('<sep>')[4].split('@')[1]
-                    methods_type = ''
-                    for m in methods.split(' '):
-                        if m in ['public', 'protected', 'private', 'static', 'final', 'abstract', 'synchronized']:
-                            continue
-                        methods_type = m
-                        break
-                    methods_name = ""
-                    for m in methods.split(' '):
-                        if m.find('(') != -1:
-                            methods_name = m.split('(')[0]
-                            break
-                    methods_params = []
-                    params = methods[methods.find('('): methods.find(')')]
-                    if params == '(':
-                        methods_params.append({})
-                    else:
-                        for p in params.split(','):
-                            methods_params.append({'type': p.split(' ')[0].strip(), 'name': p.split(' ')[1].strip()})
-
-                    classes = {'name': meta.split('<sep>')[4].split('@')[0].split('\\')[-1].split('.')[0],
-                               'methods': [{'type': methods_type, 'name': methods_name, 'params': methods_params}],
-                               'fields': []}
-                    names['classes'] = [classes]
-                    classcontent.append(names)
+            if os.path.exists("Valid/names/%s.json" % idss):
+                classcontent = [json.load(open("Valid/names/%s.json" % idss, 'r', encoding='UTF-8'))]
             else:
                 assert 0
+
             rrdicts = {}
             for x in classcontent:
                 rrdicts[x['filename']] = x
