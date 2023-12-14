@@ -739,7 +739,7 @@ def applyoperater(ans, subroot):
                 type = 'valid'
             else:
                 print(node.name)
-                assert (0)
+                assert 0
             # print(node.name)
             idx = node.father.child.index(node)
             node.father.child[idx] = x
@@ -1030,7 +1030,7 @@ def solveone(data, model):  # (treestr, prob, model, subroot, vardic, typedic, i
         if indexs < 0:
             indexs += 1
             continue
-        ans = BeamSearch((x[0], x[1], None, None, None, None, None, None, x[2], x[3]), dev_set, model, 150, args.batch_size, indexs)
+        ans = BeamSearch((x[0], x[1], None, None, None, None, None, None, x[2], x[3]), dev_set, model, 50, args.batch_size, indexs)
         for i in range(len(ans)):
             currid = indexs * args.batch_size + i
             idss = data[currid]['idss']
@@ -1070,7 +1070,7 @@ def solveone(data, model):  # (treestr, prob, model, subroot, vardic, typedic, i
                     tcodes = []
                 for code in tcodes:
                     if code.split(" ")[0] != 'root':
-                        assert (0)
+                        assert 0
                     if str(mode) + code + str(data[currid]['line']) not in patch:
                         patch[str(mode) + code + str(data[currid]['line'])] = 1
                     else:

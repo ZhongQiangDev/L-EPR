@@ -69,7 +69,7 @@ def solveLongTree(root, subroot):
     if len(root.getTreestr().strip().split()) >= 1000:
         tmp = subroot
         if len(tmp.getTreestr().split()) >= 1000:
-            assert (0)
+            assert 0
         lasttmp = None
         while True:
             if len(tmp.getTreestr().split()) >= 1000:
@@ -307,10 +307,10 @@ def generateAST(tree):
                         sub.append("^")
                     else:
                         print(type(node))
-                        assert (0)
+                        assert 0
                     sub.append("^")
             except AttributeError:
-                assert (0)
+                assert 0
                 pass
         sub.append('^')
         return sub
@@ -537,7 +537,12 @@ for meta_file in tqdm(meta_file_list):
     tokens = javalang.tokenizer.tokenize(lines1)
     parser = javalang.parser.Parser(tokens)
     tree = parser.parse()
-    tmproot = getroottree(generateAST(tree))
+    try:
+        tmproot = getroottree(generateAST(tree))
+    except AssertionError as e:
+        print("generateAST()->assert 0. skip!")
+        print(e)
+        continue
     currroot = getNodeById(tmproot, lineid)
     lnode, mnode = getSubroot(currroot)
     if mnode is None:
@@ -582,10 +587,19 @@ for meta_file in tqdm(meta_file_list):
         aftercode = "\n".join(liness[maxl + 1:])
         oldcode = "\n".join(liness[minl:maxl + 1])
         print(treeroot.printTree(treeroot))
-        troot, vardic, typedic = solveLongTree(treeroot, subroot)
+        try:
+            troot, vardic, typedic = solveLongTree(treeroot, subroot)
+        except AssertionError as e:
+            print("solveLongTree()->assert 0. skip!")
+            print(e)
+            continue
         data.append(
             {'treeroot': treeroot, 'troot': troot, 'oldcode': oldcode, 'filepath': filepath, 'subroot': subroot,
              'vardic': vardic, 'typedic': typedic, 'idss': idss, 'classname': classname, 'precode': precode,
              'aftercode': aftercode, 'tree': troot.printTreeWithVar(troot, vardic),
              'prob': troot.getTreeProb(troot), 'mode': 0, 'line': lineid, 'isa': False})
-    solveone(data, model)
+    try:
+        solveone(data, model)
+    except AssertionError as e:
+        print("solveone()->assert 0. skip!")
+        print(e)
