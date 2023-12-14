@@ -1064,7 +1064,7 @@ def solveone(data, model):  # (treestr, prob, model, subroot, vardic, typedic, i
 
                     classes = {'name': meta.split('<sep>')[4].split('@')[0].split('\\')[-1].split('.')[0],
                                'methods': [{'type': methods_type, 'name': methods_name, 'params': methods_params}],
-                               'field': []}
+                               'fields': []}
                     names['classes'] = [classes]
                     classcontent.append(names)
             else:
