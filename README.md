@@ -17,4 +17,4 @@ This is the artifact of our paper.
   * unixcoder.py: implementation of Unixcoder model
   * utils.py: a script including some functions used in run.py and train_eval.py
 * Results: a folder containing experimental results on Defects4J and Test-5000
-* multi-label_dataset_meta.xlsx: an excel sheet containing the raw data of the multi-label dataset we built
+* multi-label_dataset_meta.xlsx: an excel sheet containing the meta data of the multi-label dataset we built
