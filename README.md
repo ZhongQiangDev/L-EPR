@@ -1,5 +1,5 @@
-# P-NPR: Practical Neural Program Repair
-This is the artifact of our paper.
+# P-NPR: Practical Neural Program Repair via Learning to Ensemble
+This is the artifact of our paper 'P-NPR: Practical Neural Program Repair via Learning to Ensemble'.
 ## Dependency
 * Python 3.6.9
 * Pytorch >=1.11.0
